@@ -3,7 +3,9 @@ package com.minju.sesac.bookreviewboard.service;
 import com.minju.sesac.bookreviewboard.domain.Review;
 import com.minju.sesac.bookreviewboard.dto.ReviewCreateRequest;
 import com.minju.sesac.bookreviewboard.dto.ReviewResponse;
+import com.minju.sesac.bookreviewboard.dto.ReviewUpdateRequest;
 import com.minju.sesac.bookreviewboard.repository.ReviewRepository;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -21,10 +23,25 @@ public class ReviewService {
         return ReviewResponse.from(reviewRepository.save(newReview));
     }
 
+    @Transactional(readOnly = true)
     public List<ReviewResponse> getAll() {
         List<Review> reviews = reviewRepository.findAll();
         return reviews.stream()
                       .map(review -> ReviewResponse.from(review))
                       .collect(Collectors.toList());
+    }
+
+    public ReviewResponse update(Long id, ReviewUpdateRequest request) {
+        Review review = reviewRepository.findById(id)
+                                        .orElseThrow(() -> new EntityNotFoundException("해당 번호의 리뷰를 찾을 수 없습니다."));
+
+        review.setTitle(request.getTitle());
+        review.setContent(request.getContent());
+        review.setAuthor(request.getAuthor());
+        review.setBookTitle(request.getBookTitle());
+        review.setBookAuthor(request.getBookAuthor());
+        review.setRating(request.getRating());
+
+        return ReviewResponse.from(review);
     }
 }
