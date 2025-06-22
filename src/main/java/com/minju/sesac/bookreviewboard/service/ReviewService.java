@@ -80,6 +80,15 @@ public class ReviewService {
             return ReviewPageResponse.from(reviews, request);
         }
 
+        // 평점 범위 검색
+        if (request.getMaxRating() != null && request.getMinRating() != null) {
+            Page<ReviewResponse> reviews = reviewRepository.findByRatingBetween(request.getMinRating(),
+                                                                   request.getMaxRating(), pageable)
+                                                           .map(review -> ReviewResponse.from(review));
+
+            return ReviewPageResponse.from(reviews, request);
+        }
+
         Page<ReviewResponse> reviews = reviewRepository.findAll(pageable)
                                                        .map(review -> ReviewResponse.from(review));
 
