@@ -2,7 +2,7 @@
 
 ### 공통 요청 형식
 
-* **GET** `/reviews`
+* **GET** `/reviews/search/querydsl`
 * **Query Parameters**:
 
 | 파라미터                | 설명                       |
@@ -24,7 +24,7 @@
 ### 1. 책 제목 키워드 포함 + 평점 범위 + 최신순 정렬
 
 ```
-GET /reviews?bookTitleContains=마법&minRating=3&maxRating=5&sort=createdAt,desc&page=0&size=10
+GET /reviews/search/querydsl?bookTitleContains=마법&minRating=3&maxRating=5&sort=createdAt,desc&page=0&size=10
 ```
 
 #### 응답 예시
@@ -54,7 +54,7 @@ GET /reviews?bookTitleContains=마법&minRating=3&maxRating=5&sort=createdAt,des
 ### 2. 리뷰 제목 키워드 포함 + 평점 내림차순 정렬
 
 ```
-GET /reviews?titleContains=후기&sort=rating,desc&page=0&size=5
+GET /reviews/search/querydsl?titleContains=후기&sort=rating,desc&page=0&size=5
 ```
 
 #### 응답 예시
@@ -90,7 +90,7 @@ GET /reviews?titleContains=후기&sort=rating,desc&page=0&size=5
 ### 3. 리뷰 작성자 + 책 저자 필터링
 
 ```
-GET /reviews?author=yun&bookAuthor=J.K.Rowling&page=0&size=10
+GET /reviews/search/querydsl?author=yun&bookAuthor=J.K.Rowling&page=0&size=10
 ```
 
 #### 응답 예시
@@ -117,7 +117,7 @@ GET /reviews?author=yun&bookAuthor=J.K.Rowling&page=0&size=10
 ### 4. 리뷰 본문 키워드 + 평점 정확히 일치 + 작성일 최신순
 
 ```
-GET /reviews?contentContains=재미있&rating=5&sort=createdAt,desc&page=0&size=10
+GET /reviews/search/querydsl?contentContains=재미있&rating=5&sort=createdAt,desc&page=0&size=10
 ```
 
 #### 응답 예시
@@ -144,7 +144,7 @@ GET /reviews?contentContains=재미있&rating=5&sort=createdAt,desc&page=0&size=
 ### 5. 책 제목 정확 일치 + 작성자 정확 일치
 
 ```
-GET /reviews?bookTitle=해리포터와불의잔&author=wizard99&page=0&size=10
+GET /reviews/search/querydsl?bookTitle=해리포터와불의잔&author=wizard99&page=0&size=10
 ```
 
 #### 응답 예시
@@ -171,7 +171,7 @@ GET /reviews?bookTitle=해리포터와불의잔&author=wizard99&page=0&size=10
 ### 6. 리뷰 제목 또는 본문에 키워드 포함 (OR 조건)
 
 ```
-GET /reviews?titleContains=환상&contentContains=마법&page=0&size=10
+GET /reviews/search/querydsl?titleContains=환상&contentContains=마법&page=0&size=10
 ```
 
 #### 응답 예시
@@ -198,7 +198,7 @@ GET /reviews?titleContains=환상&contentContains=마법&page=0&size=10
 ### 7. 책 저자 + 평점 오름차순 정렬
 
 ```
-GET /reviews?bookAuthor=Tolkien&sort=rating,asc&page=0&size=10
+GET /reviews/search/querydsl?bookAuthor=Tolkien&sort=rating,asc&page=0&size=10
 ```
 
 #### 응답 예시
@@ -234,7 +234,7 @@ GET /reviews?bookAuthor=Tolkien&sort=rating,asc&page=0&size=10
 ### 8. 작성자 + 평점 범위 + 제목 키워드
 
 ```
-GET /reviews?author=reader123&minRating=2&maxRating=4&titleContains=후기&page=0&size=10
+GET /reviews/search/querydsl?author=reader123&minRating=2&maxRating=4&titleContains=후기&page=0&size=10
 ```
 
 #### 응답 예시

@@ -59,4 +59,10 @@ public class ReviewController {
         ReviewPageResponse response = reviewService.search(request);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/search/querydsl")
+    public ResponseEntity<ReviewPageResponse> searchReviewsByQueryDSL(@ModelAttribute ReviewSearchRequest request) {
+        ReviewPageResponse response = reviewService.searchByQueryDSL(request);
+        return ResponseEntity.ok(response);
+    }
 }

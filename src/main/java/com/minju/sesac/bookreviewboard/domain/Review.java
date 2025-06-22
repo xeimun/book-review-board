@@ -5,8 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Getter
 @Setter
@@ -21,6 +23,8 @@ public class Review {
     private String bookTitle;
     private String bookAuthor;
     private int rating;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
     public static Review from(ReviewCreateRequest request) {
         Review newReview = new Review();

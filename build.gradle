@@ -33,8 +33,46 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // QueryDSL 의존성
+
+    // QueryDSL의 JPA 기능을 사용할 수 있도록 해주는 핵심 라이브러리
+    implementation 'com.querydsl:querydsl-jpa:5.1.0:jakarta'
+
+    // Q클래스 생성용 APT (Annotation Processing Tool) – QueryDSL 전용
+    annotationProcessor "com.querydsl:querydsl-apt:5.1.0:jakarta"
+
+    // @Entity, @Id 등 JPA 관련 어노테이션 인식용 (APT 작동 위해 필요)
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+
+    // @Generated, @Nullable 등 Jakarta 공용 어노테이션 인식용
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+// QueryDSL Q 클래스 생성 경로 지정
+def querydslDir = "$buildDir/generated/querydsl"
+
+// 컴파일된 Q 클래스도 src 디렉토리에 포함되도록 설정
+sourceSets {
+    main.java.srcDir querydslDir
+}
+
+// QueryDSL annotation processor가 컴파일 클래스패스와 연동되도록 설정
+configurations {
+    querydsl.extendsFrom compileClasspath
+}
+
+// Java 컴파일 시, 생성된 Q 클래스를 지정한 경로에 저장
+compileJava {
+    options.annotationProcessorGeneratedSourcesDirectory = file(querydslDir)
+}
+
+// gradle clean 시, 생성된 Q 클래스도 함께 삭제
+clean {
+    delete file(querydslDir)
 }
