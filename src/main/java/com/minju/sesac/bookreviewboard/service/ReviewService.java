@@ -2,13 +2,18 @@ package com.minju.sesac.bookreviewboard.service;
 
 import com.minju.sesac.bookreviewboard.domain.Review;
 import com.minju.sesac.bookreviewboard.dto.ReviewCreateRequest;
+import com.minju.sesac.bookreviewboard.dto.ReviewPageResponse;
 import com.minju.sesac.bookreviewboard.dto.ReviewResponse;
+import com.minju.sesac.bookreviewboard.dto.ReviewSearchRequest;
 import com.minju.sesac.bookreviewboard.dto.ReviewUpdateRequest;
 import com.minju.sesac.bookreviewboard.repository.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,5 +52,16 @@ public class ReviewService {
 
     public void delete(Long id) {
         reviewRepository.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public ReviewPageResponse search(ReviewSearchRequest request) {
+
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
+
+        Page<ReviewResponse> reviews = reviewRepository.findByBookTitleContaining(request.getKeyword(), pageable)
+                                                       .map(review -> ReviewResponse.from(review));
+
+        return ReviewPageResponse.from(reviews, request);
     }
 }
