@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ReviewSearchRequest {
-    private String author;
+    private String author; // 리뷰 작성자
     private String bookTitle;
     private String keyword;
     private Integer rating;

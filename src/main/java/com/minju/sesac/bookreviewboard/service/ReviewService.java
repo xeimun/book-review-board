@@ -59,7 +59,28 @@ public class ReviewService {
 
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
 
-        Page<ReviewResponse> reviews = reviewRepository.findByBookTitleContaining(request.getKeyword(), pageable)
+        // 도서 제목 키워드 검색
+        if (request.getKeyword() != null && !request.getKeyword()
+                                                    .isEmpty()) {
+
+            Page<ReviewResponse> reviews = reviewRepository.findByBookTitleContaining(request.getKeyword(), pageable)
+                                                           .map(review -> ReviewResponse.from(review));
+
+            return ReviewPageResponse.from(reviews, request);
+        }
+
+        // 작성자 + 평점 검색
+        if (request.getAuthor() != null && !request.getAuthor()
+                                                   .isEmpty() && request.getRating() != null) {
+
+            Page<ReviewResponse> reviews = reviewRepository.findByAuthorAndRating(
+                                                                   request.getAuthor(), request.getRating(), pageable)
+                                                           .map(review -> ReviewResponse.from(review));
+
+            return ReviewPageResponse.from(reviews, request);
+        }
+
+        Page<ReviewResponse> reviews = reviewRepository.findAll(pageable)
                                                        .map(review -> ReviewResponse.from(review));
 
         return ReviewPageResponse.from(reviews, request);
